@@ -162,7 +162,6 @@ class DjangoTelegramBot(AppConfig):
 
         for b in bots_list:
             token = b.get('TOKEN', None)
-            context = b.get('CONTEXT', False)
             if not token:
                 break
 
@@ -204,8 +203,10 @@ class DjangoTelegramBot(AppConfig):
                     return
 
             else:
+                logger.info('Starting bot')
                 try:
-                    updater = Updater(token=token, request_kwargs=proxy, use_context=context)
+                    updater = Updater(token=token, request_kwargs=proxy,
+                                        use_context=True)
                     bot = updater.bot
                     bot.delete_webhook()
                     DjangoTelegramBot.updaters.append(updater)
